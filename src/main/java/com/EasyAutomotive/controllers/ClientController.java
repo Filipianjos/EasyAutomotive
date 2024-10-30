@@ -1,6 +1,8 @@
 package com.EasyAutomotive.controllers;
 
+import com.EasyAutomotive.DTO.request.CarDTO;
 import com.EasyAutomotive.DTO.request.ClientDTO;
+import com.EasyAutomotive.DTO.response.CarResponseIdDTO;
 import com.EasyAutomotive.DTO.response.ClientResponseDTO;
 import com.EasyAutomotive.services.ClientService;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +29,13 @@ public class ClientController {
         ClientResponseDTO client = this.clientService.getClient(id);
 
         return ResponseEntity.ok(client);
+    }
+
+    /** Rota para cadastrar um veículo **/
+    @PostMapping("/{clientId}/carro")
+    public ResponseEntity<CarResponseIdDTO> createCar(@PathVariable Integer clientId, @RequestBody CarDTO body){
+        CarResponseIdDTO car = clientService.crateCar(clientId, body);
+
+        return ResponseEntity.ok(car);
     }
 }
