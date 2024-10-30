@@ -88,5 +88,22 @@ Para a criação das API's, foi utilizado o SpringBoot e para testes o Insomnia
       "phone": "11990237174"
     }
 ```
+### Cadastrar Veículo do Cliente:
+- **Método**: `Post`
+- **Endpoint**: `\cliente\idCliente\carro`
 
+#### Atributos
+| Coluna     | Tipo   | Requerido? |
+|------------|--------|------------|
+| model      | String | sim        |
+| brand      | String | sim        |
+| modelYear  | int    | sim        |
+| clienteID  | Integer| sim        |
+
+#### Exemplo de retorno:
+```Json
+{
+	"id": 3
+}
+```
 ---

@@ -1,18 +1,21 @@
 package com.EasyAutomotive.services;
 
+import com.EasyAutomotive.DTO.request.CarDTO;
 import com.EasyAutomotive.DTO.request.ClientDTO;
+import com.EasyAutomotive.DTO.response.CarResponseIdDTO;
 import com.EasyAutomotive.DTO.response.ClientResponseDTO;
+import com.EasyAutomotive.domain.models.Car;
 import com.EasyAutomotive.domain.models.Client;
 import com.EasyAutomotive.repositories.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ClientService {
     private final ClientRepository clientRepository;
+    private final CarService carService;
 
     /** Método para registrar cliente **/
     public ClientDTO registerClient(ClientDTO clientDTO) {
@@ -41,8 +44,26 @@ public class ClientService {
                 client.getPhone());
     }
 
+    /** Método para criar um novo carro **/
+    public CarResponseIdDTO crateCar(Integer id, CarDTO carDTO){
+        Client client = this.getClientById(id);
+
+        Car newCar = new Car();
+        newCar.setModel(carDTO.model());
+        newCar.setBrand(carDTO.brand());
+        newCar.setModelYear(carDTO.modelYear());
+        newCar.setClient(client);
+
+        Car cratedCar = this.carService.registerCar(newCar);
+
+        return new CarResponseIdDTO(cratedCar.getId());
+
+    }
+
     /** Método que extrai o cliente **/
     private Client getClientById(Integer id){
         return clientRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente Não encontrado"));
     }
+
+
 }
