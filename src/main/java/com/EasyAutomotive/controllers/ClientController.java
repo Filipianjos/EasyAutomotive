@@ -4,6 +4,7 @@ import com.EasyAutomotive.DTO.request.CarDTO;
 import com.EasyAutomotive.DTO.request.ClientDTO;
 import com.EasyAutomotive.DTO.response.CarResponseIdDTO;
 import com.EasyAutomotive.DTO.response.ClientResponseDTO;
+import com.EasyAutomotive.domain.models.Car;
 import com.EasyAutomotive.services.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,14 @@ public class ClientController {
         return ResponseEntity.ok(body);
     }
 
+    /** Rota para cadastrar um veículo **/
+    @PostMapping("/{clientId}/carro")
+    public ResponseEntity<CarResponseIdDTO> createCar(@PathVariable Integer clientId, @RequestBody CarDTO body){
+        CarResponseIdDTO car = clientService.crateCar(clientId, body);
+
+        return ResponseEntity.ok(car);
+    }
+
     /**Rota para consultar o cliente por ID**/
     @GetMapping("/{id}")
     public ResponseEntity<ClientResponseDTO> getClient(@PathVariable Integer id){
@@ -31,11 +40,5 @@ public class ClientController {
         return ResponseEntity.ok(client);
     }
 
-    /** Rota para cadastrar um veículo **/
-    @PostMapping("/{clientId}/carro")
-    public ResponseEntity<CarResponseIdDTO> createCar(@PathVariable Integer clientId, @RequestBody CarDTO body){
-        CarResponseIdDTO car = clientService.crateCar(clientId, body);
 
-        return ResponseEntity.ok(car);
-    }
 }

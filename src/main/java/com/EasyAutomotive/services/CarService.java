@@ -6,6 +6,8 @@ import com.EasyAutomotive.repositories.CarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CarService {
@@ -16,6 +18,10 @@ public class CarService {
         this.carRepository.save(newCar);
 
         return newCar;
+    }
+
+    public List<Car> getAllCarByClient(Integer idClient){
+        return  this.carRepository.findByClientId(idClient);
     }
 
 }
