@@ -31,19 +31,6 @@ public class ClientService {
         return new ClientDTO(newClient.getName(), newClient.getLastname(), newClient.getCpfCnpj(), newClient.getEmail(), newClient.getPhone());
     }
 
-    /** Método para consultar o cliente pelo ID**/
-    public ClientResponseDTO getClient(Integer id){
-        Client client = this.getClientById(id);
-
-        return new ClientResponseDTO(
-                client.getId(),
-                client.getName(),
-                client.getLastname(),
-                client.getCpfCnpj(),
-                client.getEmail(),
-                client.getPhone());
-    }
-
     /** Método para criar um novo carro **/
     public CarResponseIdDTO crateCar(Integer id, CarDTO carDTO){
         Client client = this.getClientById(id);
@@ -60,10 +47,25 @@ public class ClientService {
 
     }
 
+    /**
+     * Método para consultar o cliente pelo ID
+     **/
+    public ClientResponseDTO getClient(Integer id){
+        Client client = this.getClientById(id);
+
+        return new ClientResponseDTO(
+                client.getId(),
+                client.getName(),
+                client.getLastname(),
+                client.getCpfCnpj(),
+                client.getEmail(),
+                client.getPhone());
+    }
+
+
     /** Método que extrai o cliente **/
     private Client getClientById(Integer id){
         return clientRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente Não encontrado"));
     }
-
 
 }
