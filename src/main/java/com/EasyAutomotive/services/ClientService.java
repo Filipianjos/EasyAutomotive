@@ -4,10 +4,12 @@ import com.EasyAutomotive.DTO.request.CarDTO;
 import com.EasyAutomotive.DTO.request.ClientDTO;
 import com.EasyAutomotive.DTO.response.CarResponseIdDTO;
 import com.EasyAutomotive.DTO.response.ClientResponseDTO;
+import com.EasyAutomotive.domain.events.CreatedClientEvent;
 import com.EasyAutomotive.domain.models.Car;
 import com.EasyAutomotive.domain.models.Client;
 import com.EasyAutomotive.repositories.ClientRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class ClientService {
     private final ClientRepository clientRepository;
     private final CarService carService;
+    private final ApplicationEventPublisher eventPublisher;
 
     /** Método para registrar cliente **/
     public ClientDTO registerClient(ClientDTO clientDTO) {
@@ -28,10 +31,13 @@ public class ClientService {
 
             this.clientRepository.save(newClient);
 
+            eventPublisher.publishEvent(new CreatedClientEvent(this, newClient.getId()));
+
         return new ClientDTO(newClient.getName(), newClient.getLastname(), newClient.getCpfCnpj(), newClient.getEmail(), newClient.getPhone());
     }
 
     /** Método para criar um novo carro **/
+
     public CarResponseIdDTO crateCar(Integer id, CarDTO carDTO){
         Client client = this.getClientById(id);
 
@@ -43,8 +49,9 @@ public class ClientService {
 
         Car cratedCar = this.carService.registerCar(newCar);
 
-        return new CarResponseIdDTO(cratedCar.getId());
+        eventPublisher.publishEvent(new CarResponseIdDTO(newCar.getId()));
 
+        return new CarResponseIdDTO(cratedCar.getId());
     }
 
     /**
@@ -60,11 +67,13 @@ public class ClientService {
                 client.getCpfCnpj(),
                 client.getEmail(),
                 client.getPhone());
+
+
     }
 
 
     /** Método que extrai o cliente **/
-    private Client getClientById(Integer id){
+    public Client getClientById(Integer id){
         return clientRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente Não encontrado"));
     }
 

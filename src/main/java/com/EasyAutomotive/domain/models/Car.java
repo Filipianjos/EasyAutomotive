@@ -34,4 +34,5 @@ public class Car {
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     private Set<ServiceOrder> serviceOrder;
+
 }

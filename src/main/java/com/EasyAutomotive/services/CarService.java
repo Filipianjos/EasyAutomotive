@@ -24,4 +24,8 @@ public class CarService {
         return  this.carRepository.findByClientId(idClient);
     }
 
+    public Car getCarById(Integer id){
+        return carRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente Não encontrado"));
+
+    }
 }
